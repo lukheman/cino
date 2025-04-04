@@ -1,0 +1,10 @@
+<a href="/note/add" class="button is-primary mb-5 fli-end">Tambah Catatan</a>
+
+<% notes.forEach(item => { %>
+<article class="message">
+    <div class="message-body">
+        <%=  item.content %>
+    </div>
+</article>
+
+<% }) %>
