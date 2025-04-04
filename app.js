@@ -48,8 +48,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// module.exports = app;
+module.exports = app;
 
-app.listen(3000, () => {
-    console.log('server listening at http://localhost:3000');
-});
+// app.listen(3000, () => {
+//     console.log('server listening at http://localhost:3000');
+// });
