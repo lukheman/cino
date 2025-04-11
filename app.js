@@ -6,9 +6,11 @@ var logger = require('morgan');
 
 const expressLayouts = require('express-ejs-layouts');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-const noteRouter = require('./routes/note');
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
+const quoteRouter = require('./routes/quote');
+
+const methodOverride = require('method-override');
 
 // const sequelize = require('./src/database.js');
 
@@ -28,9 +30,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', noteRouter);
-app.use('/users', usersRouter);
-app.use('/note', noteRouter);
+app.use(methodOverride('_method'));
+
+app.use('/', indexRouter);
+app.use('/user', userRouter);
+app.use('/quote', quoteRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -45,11 +49,11 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {title: 'Error'});
 });
 
-module.exports = app;
+// module.exports = app;
 
-// app.listen(3000, () => {
-//     console.log('server listening at http://localhost:3000');
-// });
+app.listen(3000, () => {
+    console.log('server listening at http://localhost:3000');
+});

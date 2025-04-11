@@ -5,7 +5,6 @@ const sequelize = new Sequelize({
     storage: 'database.sqlite'
 })
 
-
 const Note = sequelize.define('Note', {
     content: {
         type: DataTypes.STRING,
@@ -13,10 +12,34 @@ const Note = sequelize.define('Note', {
     }
 });
 
+const User = sequelize.define('User', {
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true, // disarankan agar tidak ada email duplikat
+    validate: {
+      isEmail: true
+    }
+  },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+});
 
 module.exports = {
     sequelize,
-    Note
+    Note,
+    User
 };
 
 // (async () => {
