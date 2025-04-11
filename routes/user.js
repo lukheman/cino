@@ -3,6 +3,10 @@ const router = express.Router();
 const { User, Note } = require('../src/database');
 const bcrypt = require('bcrypt');
 
+const isAuthenticated = require('../middlewares/auth');
+
+router.use(isAuthenticated);
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');

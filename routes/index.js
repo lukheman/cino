@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Login berhasil (simulasi session, misalnya dengan req.session)
-    // req.session.userId = user.id;
+    req.session.userId = user.id;
     res.redirect('/user/dashboard'); // redirect ke dashboard atau halaman lain
   } catch (err) {
     console.error(err);

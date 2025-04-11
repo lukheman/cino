@@ -11,8 +11,7 @@ const userRouter = require('./routes/user');
 const quoteRouter = require('./routes/quote');
 
 const methodOverride = require('method-override');
-
-// const sequelize = require('./src/database.js');
+const session = require('express-session');
 
 const app = express();
 
@@ -31,6 +30,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(methodOverride('_method'));
+
+app.use(session({
+  secret: 'citrawulandari', // ganti dengan string acak untuk keamanan
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
@@ -52,8 +57,8 @@ app.use(function(err, req, res, next) {
   res.render('error', {title: 'Error'});
 });
 
-module.exports = app;
+// module.exports = app;
 
-// app.listen(3000, () => {
-//     console.log('server listening at http://localhost:3000');
-// });
+app.listen(3000, () => {
+    console.log('server listening at http://localhost:3000');
+});
