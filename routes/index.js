@@ -5,7 +5,7 @@ const { User } = require('../src/database');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('note/list-note', { title: 'Express' });
+  res.redirect('quote');
 });
 
 
