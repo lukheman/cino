@@ -13,7 +13,6 @@ router.get('/', function(req, res, next) {
 });
 
 
-
 router.get('/dashboard', async (req, res) => {
   let notes = await Note.findAll({
       order: [['createdAt', 'DESC']]
@@ -27,15 +26,22 @@ router.get('/dashboard', async (req, res) => {
   });
 });
 
-router.get('/dashboard/add-quote', (req, res) => {
-  res.render('user/add-quote', {
-    title: 'Tambah Quote',
-  });
+router.post('/add-quote', async (req, res) => {
+  await Note.create({ content: req.body.content });
+  res.redirect('/user/dashboard');
 });
 
-router.post('/dashboard/add-quote', async (req, res) => {
-  console.log(req.body.content);
-  await Note.create({ content: req.body.content });
+router.put('/update-quote/:id', async (req, res) => {
+  const note = await Note.findByPk(req.params.id);
+
+  console.log(note);
+
+    if (!note) {
+      req.flash('error', 'Quote not found');
+      res.redirect('/user/dashboard');
+    }
+
+  await note.update({ content: req.body.content });
   res.redirect('/user/dashboard');
 });
 
