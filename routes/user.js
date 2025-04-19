@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { User, Note } = require('../src/database');
+const { User, Note } = require('../database/model');
 const bcrypt = require('bcrypt');
 
-const isAuthenticated = require('../middlewares/auth');
+const isAuthenticated = require('../middlewares/authenticated');
 
 router.use(isAuthenticated);
 
@@ -27,7 +27,12 @@ router.get('/dashboard', async (req, res) => {
 });
 
 router.post('/add-quote', async (req, res) => {
-  await Note.create({ content: req.body.content });
+
+  const { content } = req.body;
+  authorId = req.session.userId;
+
+  await Note.create({ content, authorId });
+
   res.redirect('/user/dashboard');
 });
 
