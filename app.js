@@ -9,6 +9,8 @@ const expressLayouts = require('express-ejs-layouts');
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 const quoteRouter = require('./routes/quote');
+const authRouter = require('./routes/auth');
+const apiNotesRouter = require('./routes/api/notes');
 
 const methodOverride = require('method-override');
 const session = require('express-session');
@@ -38,8 +40,10 @@ app.use(session({
 }));
 
 app.use('/', indexRouter);
+app.use('/', authRouter);
 app.use('/user', userRouter);
 app.use('/quote', quoteRouter);
+app.use('/notes', apiNotesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
