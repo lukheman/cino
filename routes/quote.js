@@ -9,11 +9,11 @@ router.get('/', async (req, res) => {
         order: [['createdAt', 'DESC']]
     });
 
-    quotes = notes.map(note => note.toJSON());
+    notes = notes.map(note => note.toJSON());
 
     res.render('quote/list-quote', {
         title: 'Catatan',
-        quotes
+        notes
     });
 })
 
