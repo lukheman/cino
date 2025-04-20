@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title><%= title || 'Home' %></title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="bg-gray-100 text-gray-800">
+  <head>
+    <meta charset="UTF-8">
+    <title><%= title || 'Home' %></title>
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" >
+  </head>
+  <body class="bg-gray-100 text-gray-800">
 
-  <main class="min-h-screen flex flex-col">
-    <div class="flex-1 container mx-auto px-4 py-8">
-      <%- body %>
+    <div class="container is-fluid">
+        <%- body %>
     </div>
-  </main>
 
-</body>
+
+  </body>
 </html>
