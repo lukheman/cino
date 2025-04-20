@@ -1,122 +1,150 @@
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Your Quotes</h1>
-    <button
-      onclick="openModal('addModal')"
-      class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl shadow transition w-full sm:w-auto"
-    >
-      Add Quote
-    </button>
-  </div>
-
-  <% if (quotes.length === 0) { %>
-    <div class="text-center text-gray-500 italic">You haven’t written any quotes yet.</div>
-  <% } else { %>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      <% quotes.forEach((quote) => { %>
-        <div class="bg-white rounded-2xl shadow-md p-6 relative">
-          <p class="text-gray-700 text-base sm:text-lg italic">“<%= quote.content %>”</p>
-          <% if (quote.author) { %>
-            <p class="text-sm text-gray-500 mt-2">— <%= quote.author %></p>
-          <% } %>
-
-          <div class="absolute top-4 right-4 flex space-x-3">
-            <button
-              onclick="openEditModal('<%= quote.id %>', `<%= quote.content.replace(/"/g, '&quot;') %>`, `<%= quote.author ? quote.author.replace(/"/g, '&quot;') : '' %>`)"
-              class="text-blue-600 hover:underline text-sm"
-              title="Edit"
-            >
-              Edit
-            </button>
-            <form action="/user/dashboard/quote/<%= quote.id %>?_method=DELETE" method="POST">
-              <button type="submit" class="text-red-500 hover:underline text-sm" title="Delete">Delete</button>
-            </form>
-          </div>
+<section class="section">
+    <div class="container">
+      <div class="columns is-vcentered is-multiline mb-5">
+        <div class="column">
+          <h1 class="title is-3 has-text-dark">Your Quotes</h1>
         </div>
-      <% }) %>
+        <div class="column is-narrow">
+          <button
+            onclick="openModal('addModal')"
+            class="button is-primary is-fullwidth-mobile"
+          >
+            Add Quote
+          </button>
+        </div>
+      </div>
+
+      <% if (quotes.length === 0) { %>
+        <div class="has-text-centered has-text-grey is-italic">You haven’t written any quotes yet.</div>
+      <% } else { %>
+        <div class="columns is-multiline">
+          <% quotes.forEach((quote) => { %>
+            <div class="column is-half">
+              <div class="box relative">
+                <p class="has-text-grey-dark is-italic content">“<%= quote.content %>”</p>
+                <% if (quote.author) { %>
+                  <p class="has-text-grey is-size-7 mt-2">— <%= quote.author %></p>
+                <% } %>
+
+                <div class="is-flex is-absolute" style="top: 1rem; right: 1rem; gap: 1rem;">
+                  <button
+                    onclick="openEditModal('<%= quote.id %>', `<%= quote.content.replace(/"/g, '"') %>`, `<%= quote.author ? quote.author.replace(/"/g, '"') : '' %>`)"
+                    class="has-text-info"
+                    title="Edit"
+                  >
+                    Edit
+                  </button>
+                  <form action="/user/dashboard/quote/<%= quote.id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="has-text-danger" title="Delete">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
     </div>
-  <% } %>
-</div>
+  </section>
 
-<!-- ADD Modal -->
-<div id="addModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center p-4">
-  <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-xl space-y-5 overflow-y-auto max-h-[90vh]">
-    <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Add Quote</h2>
-    <form action="/user/add-quote" method="POST" class="space-y-4">
-      <div>
-        <label class="block mb-1 text-sm font-medium text-gray-700">Quote</label>
-        <textarea
-          name="content"
-          required
-          class="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y"
-        ></textarea>
+  <!-- ADD Modal -->
+  <div id="addModal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title is-5">Add Quote</h2>
+        <form action="/user/add-quote" method="POST">
+          <div class="field">
+            <label class="label is-small">Quote</label>
+            <div class="control">
+              <textarea
+                name="content"
+                required
+                class="textarea"
+                placeholder="Enter your quote"
+              ></textarea>
+            </div>
+          </div>
+          <div class="field is-grouped is-grouped-right">
+            <div class="control">
+              <button
+                type="button"
+                onclick="closeModal('addModal')"
+                class="button is-light"
+              >
+                Cancel
+              </button>
+            </div>
+            <div class="control">
+              <button
+                type="submit"
+                class="button is-primary"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="flex justify-end gap-3 mt-4">
-        <button
-          type="button"
-          onclick="closeModal('addModal')"
-          class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl shadow"
-        >
-          Save
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
-</div>
 
-<!-- EDIT Modal -->
-<div id="editModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center p-4">
-  <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-xl space-y-5 overflow-y-auto max-h-[90vh]">
-    <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Edit Quote</h2>
-    <form  id="editForm" method="POST" class="space-y-4">
-      <input type="hidden" name="_method" value="PUT">
-      <div>
-        <label class="block mb-1 text-sm font-medium text-gray-700">Quote</label>
-        <textarea
-          id="editText"
-          name="content"
-          required
-          class="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y"
-        ></textarea>
+  <!-- EDIT Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title is-5">Edit Quote</h2>
+        <form id="editForm" method="POST">
+          <input type="hidden" name="_method" value="PUT">
+          <div class="field">
+            <label class="label is-small">Quote</label>
+            <div class="control">
+              <textarea
+                id="editText"
+                name="content"
+                required
+                class="textarea"
+                placeholder="Edit your quote"
+              ></textarea>
+            </div>
+          </div>
+          <div class="field is-grouped is-grouped-right">
+            <div class="control">
+              <button
+                type="button"
+                onclick="closeModal('editModal')"
+                class="button is-light"
+              >
+                Cancel
+              </button>
+            </div>
+            <div class="control">
+              <button
+                type="submit"
+                class="button is-primary"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="flex justify-end gap-3 mt-4">
-        <button
-          type="button"
-          onclick="closeModal('editModal')"
-          class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl shadow"
-        >
-          Update
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
-</div>
 
-<script>
-  function openModal(id) {
-    document.getElementById(id).classList.remove("hidden");
-  }
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add("is-active");
+    }
 
-  function closeModal(id) {
-    document.getElementById(id).classList.add("hidden");
-  }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("is-active");
+    }
 
-  function openEditModal(id, text, author) {
-    const form = document.getElementById("editForm");
-    document.getElementById("editText").value = text;
-    form.action = `/user/update-quote/${id}?_method=PUT`;
-    openModal("editModal");
-  }
-</script>
+    function openEditModal(id, text, author) {
+      const form = document.getElementById("editForm");
+      document.getElementById("editText").value = text;
+      form.action = `/user/update-quote/${id}?_method=PUT`;
+      openModal("editModal");
+    }
+  </script>
